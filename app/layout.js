@@ -1,6 +1,10 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ToastProvider from "@/components/ToastProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,23 +17,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer",
-  description: "Official website of APTIKOM organization.",
-};
-
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  // Check if current path is admin page
+  const isAdminPage = pathname?.startsWith('/admin');
+
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
+      <head>
+        <title>APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer</title>
+        <meta name="description" content="Official website of APTIKOM organization." />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col font-sans`}
         suppressHydrationWarning
       >
-        <Navbar />
-        <main className="flex-grow bg-gray-50">
+        <ToastProvider />
+        {!isAdminPage && <Navbar />}
+        <main className={isAdminPage ? "" : "flex-grow bg-gray-50"}>
           {children}
         </main>
-        <Footer />
+        {!isAdminPage && <Footer />}
       </body>
     </html>
   );

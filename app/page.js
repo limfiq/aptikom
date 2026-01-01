@@ -1,7 +1,8 @@
 import Hero from '@/components/Hero';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, BookOpen, Users, Award } from 'lucide-react';
-const { Post, Event } = require('@/models');
+import PartnerCarousel from '@/components/PartnerCarousel';
+import { Calendar, MapPin, ArrowRight, BookOpen, Users, Award, ExternalLink } from 'lucide-react';
+const { Post, Event, Achievement, Partner, OrganizationProfile } = require('@/models');
 
 export default async function Home() {
   const news = await Post.findAll({
@@ -15,6 +16,26 @@ export default async function Home() {
     limit: 3,
     raw: true
   });
+
+  const achievements = await Achievement.findAll({
+    order: [
+      ['order', 'ASC'],
+      ['date', 'DESC']
+    ],
+    limit: 4,
+    raw: true
+  });
+
+  const partners = await Partner.findAll({
+    order: [['order', 'ASC']],
+    raw: true
+  });
+
+  const profile = await OrganizationProfile.findOne({
+    raw: true
+  });
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Hero />
@@ -32,8 +53,8 @@ export default async function Home() {
                   className="relative w-full h-full object-cover rounded-full border-4 border-white shadow-xl z-10"
                 />
               </div>
-              <h3 className="text-xl font-bold text-primary">Prof. Dr. Ir. Zainal A. Hasibuan, MLS., Ph.D.</h3>
-              <p className="text-secondary font-medium uppercase tracking-wider text-sm mt-1">Ketua Umum APTIKOM</p>
+              <h3 className="text-xl font-bold text-primary">{profile?.chairperson || 'Prof. Dr. Ir. Zainal A. Hasibuan, MLS., Ph.D.'}</h3>
+              <p className="text-secondary font-medium uppercase tracking-wider text-sm mt-1">Ketua Umum {profile?.abbreviation || 'APTIKOM'}</p>
             </div>
             <div className="md:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6 relative inline-block">
@@ -97,6 +118,61 @@ export default async function Home() {
                 Pendampingan dan klinik mutu untuk membantu program studi mencapai akreditasi unggul LAM INFOKOM.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements Section */}
+      <section className="py-16 bg-gradient-to-br from-primary to-primary-hover text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/3 translate-y-1/3"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex justify-between items-end mb-10">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Prestasi Terbaru</h2>
+              <p className="text-white/80 max-w-xl">
+                Jejak langkah keberhasilan APTIKOM dalam memajukan pendidikan informatika di Indonesia.
+              </p>
+            </div>
+            <Link href="/achievements" className="text-white hover:text-secondary transition-colors font-medium flex items-center bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
+              Lihat Semua <ArrowRight size={18} className="ml-2" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {achievements.map((item) => (
+              <div key={item.id} className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+                <div className="h-40 overflow-hidden relative">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white/5">
+                      <Award size={40} className="text-white/40" />
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2 bg-secondary text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                    {new Date(item.date).getFullYear()}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-bold mb-2 line-clamp-2 leading-tight group-hover:text-secondary transition-colors">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center text-xs text-white/70">
+                    <Award size={12} className="mr-1" />
+                    {item.category || 'Penghargaan'}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -186,6 +262,17 @@ export default async function Home() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-12 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-400 uppercase tracking-widest">Mitra Kerjasama</h2>
+          </div>
+
+          <PartnerCarousel partners={partners} />
         </div>
       </section>
 

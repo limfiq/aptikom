@@ -20,9 +20,9 @@ export default async function Management() {
 
                 {/* Executive Board */}
                 <div className="mb-16">
-                    <h2 className="text-2xl font-bold text-primary mb-8 border-l-4 border-secondary pl-4">Pengurus Harian</h2>
+                    <h2 className="text-2xl font-bold text-primary mb-8 border-l-4 border-secondary pl-4">Leader</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {boardMembers.filter(m => m.department === 'Executive Board').map((member) => (
+                        {boardMembers.filter(m => m.department === 'Executive').map((member) => (
                             <div key={member.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden text-center p-6 border border-gray-100">
                                 <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full mb-4 overflow-hidden border-4 border-gray-100">
                                     <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
@@ -36,9 +36,9 @@ export default async function Management() {
 
                 {/* Vice Chairmen */}
                 <div>
-                    <h2 className="text-2xl font-bold text-primary mb-8 border-l-4 border-secondary pl-4">Wakil Ketua</h2>
+                    <h2 className="text-2xl font-bold text-primary mb-8 border-l-4 border-secondary pl-4">Departemen</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {boardMembers.filter(m => m.department === 'Vice Chairmen').map((member) => (
+                        {boardMembers.filter(m => m.department === 'Departemen').map((member) => (
                             <div key={member.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden text-center p-6 border border-gray-100">
                                 <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full mb-4 overflow-hidden border-4 border-gray-100">
                                     <img src={member.image} alt={member.name} className="w-full h-full object-cover" />

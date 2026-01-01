@@ -197,6 +197,111 @@ const OrganizationProfile = sequelize.define('OrganizationProfile', {
         primaryKey: true,
         autoIncrement: true
     },
+    // Basic Information
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'APTIKOM'
+    },
+    fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Asosiasi Pendidikan Tinggi Informatika dan Komputer'
+    },
+    abbreviation: {
+        type: DataTypes.STRING,
+        defaultValue: 'APTIKOM'
+    },
+
+    // Legal & Establishment
+    establishedDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+    },
+    legalStatus: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    registrationNumber: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    // Contact Information
+    email: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    address: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    province: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    postalCode: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    website: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    // Social Media
+    facebook: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    twitter: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    instagram: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    linkedin: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    youtube: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    // Organizational Details
+    chairperson: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    secretary: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    treasurer: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    totalMembers: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    totalInstitutions: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+
+    // Core Content
     history: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -208,6 +313,24 @@ const OrganizationProfile = sequelize.define('OrganizationProfile', {
     mission: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    goals: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    objectives: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    structure: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+
+    // Media
+    logo: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: 'OrganizationProfile',
@@ -223,11 +346,19 @@ const IndividualMember = sequelize.define('IndividualMember', {
         primaryKey: true,
         autoIncrement: true
     },
+    employeeNumber: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false
     },
     affiliation: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    studyProgram: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -239,8 +370,9 @@ const IndividualMember = sequelize.define('IndividualMember', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    image: {
-        type: DataTypes.STRING
+    validityPeriod: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
     }
 }, {
     tableName: 'IndividualMember',
@@ -249,8 +381,18 @@ const IndividualMember = sequelize.define('IndividualMember', {
     updatedAt: false
 });
 
+// Banner Model
+const Admin = require('./Admin');
+const Banner = require('./Banner');
+const ContactInfo = require('./ContactInfo');
+const ActivityLog = require('./ActivityLog');
+
+// Export all models
+const ContactMessage = require('./ContactMessage');
+const Achievement = require('./Achievement');
+const Partner = require('./Partner');
+
 module.exports = {
-    sequelize,
     Post,
     Event,
     BoardMember,
@@ -258,5 +400,13 @@ module.exports = {
     Journal,
     Document,
     OrganizationProfile,
-    IndividualMember
+    IndividualMember,
+    Admin,
+    Banner,
+    ContactInfo,
+    ActivityLog,
+    ContactMessage,
+    Achievement,
+    Partner,
+    sequelize
 };

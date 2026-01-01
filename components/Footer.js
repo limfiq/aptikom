@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Footer() {
     return (
@@ -8,7 +9,8 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Column 1: Organization Info */}
                     <div className="col-span-1 md:col-span-1">
-                        <h3 className="text-white text-xl font-bold mb-4 tracking-wider">APTIKOM</h3>
+                        <h3 className="text-white text-xl font-bold mb-4 tracking-wider">APTIKOM Jatim</h3>
+                        <Image src="/logo.png" alt="Logo" width={100} height={50} />
                         <p className="text-sm mb-4">
                             Asosiasi Pendidikan Tinggi Informatika dan Komputer. Mewujudkan pendidikan tinggi komputer yang berkualitas dan berdaya saing global.
                         </p>
