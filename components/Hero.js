@@ -141,15 +141,15 @@ export default function Hero() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                         <div>
-                            <div className="text-3xl font-bold text-secondary">850+</div>
+                            <div className="text-3xl font-bold text-secondary">1000+</div>
+                            <div className="text-sm text-gray-400 uppercase tracking-wider">Anggota Individu</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-secondary">60+</div>
                             <div className="text-sm text-gray-400 uppercase tracking-wider">Anggota Institusi</div>
                         </div>
                         <div>
-                            <div className="text-3xl font-bold text-secondary">34</div>
-                            <div className="text-sm text-gray-400 uppercase tracking-wider">Provinsi</div>
-                        </div>
-                        <div>
-                            <div className="text-3xl font-bold text-secondary">100+</div>
+                            <div className="text-3xl font-bold text-secondary">50+</div>
                             <div className="text-sm text-gray-400 uppercase tracking-wider">Mitra Industri</div>
                         </div>
                         <div>

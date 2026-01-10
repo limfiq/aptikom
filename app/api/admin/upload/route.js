@@ -2,11 +2,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { authenticateAdmin, unauthorizedResponse } from '../../../../lib/middleware';
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
+
 
 export async function POST(request) {
     const auth = await authenticateAdmin(request);

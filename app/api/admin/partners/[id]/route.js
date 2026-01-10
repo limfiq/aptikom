@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Partner } from '@/models';
-import { uploadImage } from '../../../../lib/upload';
+import { uploadImage } from '@/lib/upload';
 
 export async function GET(request, { params }) {
     try {
