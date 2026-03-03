@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import AdminSidebar from '../../components/AdminSidebar';
+import AdminUserMenu from '../../components/AdminUserMenu';
 
 export default function AdminLayout({ children }) {
     const router = useRouter();
     const pathname = usePathname();
     const [loading, setLoading] = useState(true);
     const [adminInfo, setAdminInfo] = useState(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         // Skip authentication check for login page
@@ -54,24 +56,25 @@ export default function AdminLayout({ children }) {
 
     return (
         <div className="flex min-h-screen bg-gray-50">
-            <AdminSidebar onLogout={handleLogout} />
+            <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-            <div className="flex-1">
+            <div className="flex-1" onClick={() => sidebarOpen && setSidebarOpen(false)}>
                 {/* Top Bar */}
                 <div className="bg-white border-b border-gray-200 px-8 py-4">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-gray-800">
-                            Admin Dashboard
-                        </h2>
                         <div className="flex items-center gap-4">
-                            <div className="text-right">
-                                <p className="text-sm font-medium text-gray-900">
-                                    {adminInfo?.username}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                    {adminInfo?.role}
-                                </p>
-                            </div>
+                            {/* sidebar toggle for mobile */}
+                            <button
+                                className="md:hidden text-gray-600 hover:text-gray-900"
+                                onClick={() => setSidebarOpen(true)}
+                            >
+                                ☰
+                            </button>
+
+                            <AdminUserMenu 
+                                adminInfo={adminInfo}
+                                onLogout={handleLogout}
+                            />
                         </div>
                     </div>
                 </div>

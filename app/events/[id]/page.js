@@ -77,15 +77,8 @@ export default async function EventDetail({ params }) {
                     {/* Description */}
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-primary mb-4">Tentang Event</h2>
-                        <p className="text-gray-700 leading-relaxed">
-                            Event {event.type.toLowerCase()} ini akan diselenggarakan pada tanggal{' '}
-                            {new Date(event.date).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            })}{' '}
-                            di {event.location}. Acara ini merupakan bagian dari program APTIKOM untuk meningkatkan
-                            kualitas pendidikan tinggi informatika dan komputer di Indonesia.
+                        <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                            {event.description || `Event ${event.type.toLowerCase()} ini akan diselenggarakan pada tanggal ${new Date(event.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} di ${event.location}. Acara ini merupakan bagian dari program APTIKOM untuk meningkatkan kualitas pendidikan tinggi informatika dan komputer di Indonesia.`}
                         </p>
                     </div>
 

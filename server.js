@@ -8,7 +8,17 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
+    // ensure all defined models have corresponding tables
+    try {
+        const { sequelize } = require('./models');
+        await sequelize.sync({ alter: true });
+        console.log('Database synchronized successfully');
+    } catch (syncErr) {
+        console.error('Error synchronizing database:', syncErr);
+        // decide whether to exit or continue; we'll continue so the server still starts
+    }
+
     createServer((req, res) => {
         const parsedUrl = parse(req.url, true);
         handle(req, res, parsedUrl);

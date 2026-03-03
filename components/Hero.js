@@ -18,13 +18,26 @@ export default function Hero() {
         buttonLink: 'https://dias.aptikom.org/'
     };
 
-    // Fetch banners from API
+    // Fetch banners from API and normalize fields to match component expectations
     useEffect(() => {
         async function fetchBanners() {
             try {
                 const response = await fetch('/api/banners');
                 if (response.ok) {
-                    const data = await response.json();
+                    const raw = await response.json();
+                    const data = (raw || []).map((b) => ({
+                        id: b.id,
+                        title: b.title || '',
+                        subtitle: b.subtitle || b.description || '',
+                        // Banner model uses `backgroundImage`; some seeds used `image`
+                        backgroundImage: b.backgroundImage || b.image || b.background_image || defaultBanner.backgroundImage,
+                        // CTA text and link fallbacks
+                        buttonText: b.buttonText || b.button_text || b.ctaText || defaultBanner.buttonText,
+                        buttonLink: b.buttonLink || b.button_link || b.link || b.url || defaultBanner.buttonLink,
+                        // keep raw link alias for other uses
+                        link: b.link || b.buttonLink || b.url || ''
+                    }));
+
                     setBanners(data.length > 0 ? data : [defaultBanner]);
                 } else {
                     setBanners([defaultBanner]);
@@ -80,7 +93,7 @@ export default function Hero() {
                         <div className="absolute inset-0 bg-gradient-to-r from-[#1A2B48] to-[#1A2B48]/80 z-10"></div>
                         <div
                             className="absolute inset-0 bg-cover bg-center z-0 opacity-40 mix-blend-overlay"
-                            style={{ backgroundImage: `url('${banner.backgroundImage}')` }}
+                            style={{ backgroundImage: `url('${banner.image || banner.backgroundImage || defaultBanner.backgroundImage}')` }}
                         ></div>
                     </div>
                 ))}
@@ -99,9 +112,9 @@ export default function Hero() {
                             {currentBanner.subtitle}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            {currentBanner.buttonText && currentBanner.buttonLink && (
+                            {currentBanner.buttonText && ( // use either buttonLink or link from banner
                                 <Link
-                                    href={currentBanner.buttonLink}
+                                    href={currentBanner.buttonLink || currentBanner.link || '#'}
                                     className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-secondary hover:bg-secondary-hover transition-colors md:text-lg"
                                 >
                                     {currentBanner.buttonText}
@@ -109,7 +122,7 @@ export default function Hero() {
                                 </Link>
                             )}
                             <Link
-                                href="/about"
+                                href={currentBanner.link || currentBanner.buttonLink || '/about'}
                                 className="inline-flex items-center justify-center px-8 py-3 border border-gray-400 text-base font-medium rounded-md text-white hover:bg-white/10 transition-colors md:text-lg"
                             >
                                 Pelajari Lebih Lanjut

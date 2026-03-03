@@ -34,7 +34,8 @@ const Admin = sequelize.define('Admin', {
         defaultValue: true
     }
 }, {
-    tableName: 'Admin',
+    // use plural lowercase so FK references from ActivityLog succeed
+    tableName: 'admins',
     timestamps: true,
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'

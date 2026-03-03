@@ -18,37 +18,33 @@ export default function Contact() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Default contact info as fallback
-    const defaultContactInfo = {
-        officeName: 'Kantor Pusat',
-        address: 'Gd. Graha Simatupang, Menara I A Lantai 5\nJl. TB Simatupang Kav. 38',
-        city: 'Jakarta',
-        province: 'DKI Jakarta',
-        phone: '+62 811 8300 996',
-        email: 'info@aptikom.org',
-        weekdayHours: '08.00 - 16.00 WIB',
-        weekendHours: 'Tutup'
-    };
-
-    // Fetch contact info from API
+    // Fetch organization profile from database
     useEffect(() => {
-        async function fetchContactInfo() {
+        async function fetchContactData() {
             try {
-                const response = await fetch('/api/contact-info');
+                const response = await fetch('/api/profile');
                 if (response.ok) {
                     const data = await response.json();
-                    setContactInfo(data);
+                    setContactInfo({
+                        officeName: data.name || 'APTIKOM',
+                        address: data.address || '',
+                        city: data.city || '',
+                        province: data.province || '',
+                        phone: data.phone || '',
+                        email: data.email || '',
+                        weekdayHours: data.operatingHours?.weekday || '08.00 - 16.00 WIB',
+                        weekendHours: data.operatingHours?.weekend || 'Closed'
+                    });
                 } else {
-                    setContactInfo(defaultContactInfo);
+                    console.error('Failed to fetch profile:', response.status);
                 }
             } catch (error) {
-                console.error('Error fetching contact info:', error);
-                setContactInfo(defaultContactInfo);
+                console.error('Error fetching contact data:', error);
             } finally {
                 setLoading(false);
             }
         }
-        fetchContactInfo();
+        fetchContactData();
     }, []);
 
     const handleInputChange = (e) => {
@@ -103,7 +99,16 @@ export default function Contact() {
         }
     };
 
-    const info = contactInfo || defaultContactInfo;
+    const info = contactInfo || {
+        officeName: 'APTIKOM',
+        address: '',
+        city: '',
+        province: '',
+        phone: '',
+        email: '',
+        weekdayHours: '—',
+        weekendHours: '—'
+    };
 
     return (
         <div className="bg-gray-50 min-h-screen py-16">
@@ -139,9 +144,9 @@ export default function Contact() {
                                             <div className="ml-4">
                                                 <p className="font-semibold text-gray-900">Alamat</p>
                                                 <p className="text-gray-600 whitespace-pre-line">
-                                                    {info.address}
+                                                    {info.address || '(Tidak tersedia)'}
                                                     {info.city && `, ${info.city}`}
-                                                    {info.province && `, ${info.province}`}
+                                                    {info.province && ` - ${info.province}`}
                                                 </p>
                                             </div>
                                         </div>

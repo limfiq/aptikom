@@ -1,18 +1,14 @@
 import Link from 'next/link';
 
+// since this component runs on the server we can bypass the HTTP layer
+// and pull directly from the ORM – eliminating network errors altogether.
 async function getProfile() {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/profile`, {
-            cache: 'no-store'
-        });
-
-        if (!res.ok) {
-            throw new Error('Failed to fetch profile');
-        }
-
-        return res.json();
+        const { OrganizationProfile } = require('@/models');
+        const profile = await OrganizationProfile.findOne({ raw: true });
+        return profile;
     } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error querying profile:', error);
         return null;
     }
 }
