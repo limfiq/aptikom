@@ -86,7 +86,34 @@ export async function POST(request) {
 
         // Parse request body
         const body = await request.json();
-        const { name, email, subject, message } = body;
+        const { name, email, subject, message, recaptchaToken } = body;
+
+        if (!recaptchaToken) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: 'Silakan verifikasi reCAPTCHA terlebih dahulu.'
+                },
+                { status: 400 }
+            );
+        }
+
+        // Verify reCAPTCHA token
+        const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+        const recaptchaVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${recaptchaToken}`;
+
+        const recaptchaRes = await fetch(recaptchaVerifyUrl, { method: 'POST' });
+        const recaptchaData = await recaptchaRes.json();
+
+        if (!recaptchaData.success) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'
+                },
+                { status: 400 }
+            );
+        }
 
         // Validate required fields
         if (!name || !email || !subject || !message) {

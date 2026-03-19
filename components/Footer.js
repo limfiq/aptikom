@@ -20,25 +20,41 @@ export default function Footer() {
         linkedin: '#'
     };
 
-    // Fetch profile from API
+    // Fetch profile and contact info from API
     useEffect(() => {
-        async function fetchProfile() {
+        async function fetchData() {
             try {
-                const response = await fetch('/api/profile');
-                if (response.ok) {
-                    const data = await response.json();
-                    setProfile(data);
-                } else {
-                    setProfile(defaultData);
+                const [profileRes, contactRes] = await Promise.all([
+                    fetch('/api/profile'),
+                    fetch('/api/contact-info')
+                ]);
+                
+                let profileData = defaultData;
+                if (profileRes.ok) {
+                    profileData = await profileRes.json();
                 }
+                
+                if (contactRes.ok) {
+                    const contactData = await contactRes.json();
+                    profileData = {
+                        ...profileData,
+                        address: contactData.address || profileData.address,
+                        city: contactData.city || profileData.city,
+                        province: contactData.province || profileData.province,
+                        phone: contactData.phone || profileData.phone,
+                        email: contactData.email || profileData.email,
+                    };
+                }
+                
+                setProfile(profileData);
             } catch (error) {
-                console.error('Error fetching profile:', error);
+                console.error('Error fetching footer data:', error);
                 setProfile(defaultData);
             } finally {
                 setLoading(false);
             }
         }
-        fetchProfile();
+        fetchData();
     }, []);
 
     const data = profile || defaultData;
@@ -51,7 +67,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Column 1: Organization Info */}
                     <div className="col-span-1 md:col-span-1">
-                        <h3 className="text-white text-xl font-bold mb-4 tracking-wider">APTIKOM Jawa Timur</h3>
+                        <h3 className="text-white text-xl font-bold mb-4 tracking-wider">{data.name || 'APTIKOM'}</h3>
                         <Image src="/logo.png" alt="Logo" width={100} height={50} />
                         <p className="text-sm mb-4">
                             Asosiasi Pendidikan Tinggi Informatika dan Komputer. Mewujudkan pendidikan tinggi komputer yang berkualitas dan berdaya saing global.
@@ -128,7 +144,7 @@ export default function Footer() {
             </div>
             <div className="bg-[#15233b] py-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-400">
-                    &copy; {new Date().getFullYear()} APTIKOM. All rights reserved.
+                    &copy; {new Date().getFullYear()} {data.name || 'APTIKOM'}. All rights reserved.
                 </div>
             </div>
         </footer>

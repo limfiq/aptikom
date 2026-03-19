@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Contact() {
     const [contactInfo, setContactInfo] = useState(null);
@@ -17,23 +18,24 @@ export default function Contact() {
         message: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const recaptchaRef = useRef(null);
 
     // Fetch organization profile from database
     useEffect(() => {
         async function fetchContactData() {
             try {
-                const response = await fetch('/api/profile');
+                const response = await fetch('/api/contact-info');
                 if (response.ok) {
                     const data = await response.json();
                     setContactInfo({
-                        officeName: data.name || 'APTIKOM',
+                        officeName: data.officeName || 'APTIKOM',
                         address: data.address || '',
                         city: data.city || '',
                         province: data.province || '',
                         phone: data.phone || '',
                         email: data.email || '',
-                        weekdayHours: data.operatingHours?.weekday || '08.00 - 16.00 WIB',
-                        weekendHours: data.operatingHours?.weekend || 'Closed'
+                        weekdayHours: data.weekdayHours || '08.00 - 16.00 WIB',
+                        weekendHours: data.weekendHours || 'Closed'
                     });
                 } else {
                     console.error('Failed to fetch profile:', response.status);
@@ -64,6 +66,12 @@ export default function Contact() {
             return;
         }
 
+        const recaptchaValue = recaptchaRef.current?.getValue();
+        if (!recaptchaValue) {
+            toast.error('Silakan verifikasi reCAPTCHA terlebih dahulu.');
+            return;
+        }
+
         setIsSubmitting(true);
         const loadingToast = toast.loading('Mengirim pesan...');
 
@@ -73,7 +81,10 @@ export default function Contact() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    recaptchaToken: recaptchaValue
+                })
             });
 
             const data = await response.json();
@@ -87,6 +98,7 @@ export default function Contact() {
                     subject: '',
                     message: ''
                 });
+                if (recaptchaRef.current) recaptchaRef.current.reset();
             } else {
                 toast.error(data.message || 'Gagal mengirim pesan. Silakan coba lagi.');
             }
@@ -263,6 +275,13 @@ export default function Contact() {
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all disabled:bg-gray-100"
                                     placeholder="Tuliskan pesan Anda di sini..."
                                 ></textarea>
+                            </div>
+
+                            <div className="flex my-4">
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'}
+                                />
                             </div>
 
                             <button
