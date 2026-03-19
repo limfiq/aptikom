@@ -1,10 +1,5 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ToastProvider from "@/components/ToastProvider";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,43 +12,44 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata = {
+  metadataBase: new URL("https://aptikom.org"),
+  title: "APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer",
+  description: "Asosiasi Pendidikan Tinggi Informatika dan Komputer (APTIKOM) adalah organisasi yang beranggotakan perguruan tinggi dengan program studi informatika dan komputer di Indonesia.",
+  openGraph: {
+    title: "APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer",
+    description: "Organisasi nirlaba yang memfasilitasi kolaborasi, peningkatan kualitas, dan pengembangan profesional bagi institusi dan dosen informatika di seluruh Indonesia.",
+    url: "https://aptikom.org",
+    siteName: "APTIKOM",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Logo APTIKOM",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer",
+    description: "Organisasi nirlaba yang memfasilitasi kolaborasi, peningkatan kualitas, dan pengembangan profesional bagi institusi dan dosen informatika di seluruh Indonesia.",
+    images: ["/logo.png"],
+  },
+};
+
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
-
-  // Check if current path is admin page
-  const isAdminPage = pathname?.startsWith('/admin');
-
   return (
     <html lang="id" suppressHydrationWarning>
-      <head>
-        <title>APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer</title>
-        <meta name="description" content="Asosiasi Pendidikan Tinggi Informatika dan Komputer (APTIKOM) adalah organisasi yang beranggotakan perguruan tinggi dengan program studi informatika dan komputer di Indonesia." />
-        
-        {/* Open Graph Meta Tags for Social Media Sharing */}
-        <meta property="og:title" content="APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer" />
-        <meta property="og:description" content="Organisasi nirlaba yang memfasilitasi kolaborasi, peningkatan kualitas, dan pengembangan profesional bagi institusi dan dosen informatika di seluruh Indonesia." />
-        <meta property="og:image" content="https://aptikom.org/images/aptikom-og-image.jpg" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://aptikom.org" />
-        <meta property="og:site_name" content="APTIKOM" />
-        <meta property="og:locale" content="id_ID" />
-        
-        {/* Twitter Card Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="APTIKOM - Asosiasi Pendidikan Tinggi Informatika dan Komputer" />
-        <meta name="twitter:description" content="Organisasi nirlaba yang memfasilitasi kolaborasi, peningkatan kualitas, dan pengembangan profesional bagi institusi dan dosen informatika di seluruh Indonesia." />
-        <meta name="twitter:image" content="https://aptikom.org/images/aptikom-og-image.jpg" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col font-sans`}
         suppressHydrationWarning
       >
-        <ToastProvider />
-        {!isAdminPage && <Navbar />}
-        <main className={isAdminPage ? "" : "flex-grow bg-gray-50"}>
+        <ClientLayoutWrapper>
           {children}
-        </main>
-        {!isAdminPage && <Footer />}
+        </ClientLayoutWrapper>
       </body>
     </html>
   );

@@ -4,6 +4,8 @@ import PartnerCarousel from '@/components/PartnerCarousel';
 import { Calendar, MapPin, ArrowRight, BookOpen, Users, Award, ExternalLink } from 'lucide-react';
 const { Post, Event, Achievement, Partner, OrganizationProfile } = require('@/models');
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const news = await Post.findAll({
     order: [['createdAt', 'DESC']],

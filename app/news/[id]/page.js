@@ -3,6 +3,39 @@ import Link from 'next/link';
 import { Calendar, ArrowLeft, Tag } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const post = await Post.findOne({
+        where: { id: parseInt(id) },
+        raw: true
+    });
+
+    if (!post) {
+        return {
+            title: 'Berita Tidak Ditemukan | APTIKOM',
+        };
+    }
+
+    const description = post.content ? post.content.substring(0, 150) + '...' : 'Berita terbaru APTIKOM.';
+
+    return {
+        title: `${post.title} | Berita APTIKOM`,
+        description: description,
+        openGraph: {
+            title: post.title,
+            description: description,
+            images: post.image ? [post.image] : ['/logo.png'],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: description,
+            images: post.image ? [post.image] : ['/logo.png'],
+        }
+    };
+}
 export default async function NewsDetail({ params }) {
     const { id } = await params;
 

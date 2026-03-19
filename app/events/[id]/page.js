@@ -3,6 +3,39 @@ import Link from 'next/link';
 import { Calendar, MapPin, ArrowLeft, ExternalLink } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const event = await Event.findOne({
+        where: { id: parseInt(id) },
+        raw: true
+    });
+
+    if (!event) {
+        return {
+            title: 'Event Tidak Ditemukan | APTIKOM',
+        };
+    }
+
+    const description = event.description ? event.description.substring(0, 150) + '...' : `Event ${event.type} pada ${new Date(event.date).toLocaleDateString('id-ID')}`;
+
+    return {
+        title: `${event.title} | Event APTIKOM`,
+        description: description,
+        openGraph: {
+            title: event.title,
+            description: description,
+            images: ['/logo.png'],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: event.title,
+            description: description,
+            images: ['/logo.png'],
+        }
+    };
+}
 export default async function EventDetail({ params }) {
     const { id } = await params;
 

@@ -2,6 +2,8 @@ const { Event } = require('@/models');
 import Link from 'next/link';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventsPage() {
     const events = await Event.findAll({
         order: [['date', 'ASC']],

@@ -2,6 +2,8 @@ const { Post } = require('@/models');
 import Link from 'next/link';
 import { Calendar, Tag, ArrowRight } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewsPage() {
     const posts = await Post.findAll({
         order: [['createdAt', 'DESC']],

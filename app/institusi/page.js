@@ -1,6 +1,8 @@
 const { MemberInstitution } = require('@/models');
 import MemberTable from '@/components/MemberTable';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Members() {
     const members = await MemberInstitution.findAll({
         order: [['name', 'ASC']],

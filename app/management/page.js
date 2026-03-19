@@ -1,6 +1,8 @@
 import Link from 'next/link';
 const { BoardMember } = require('@/models');
 
+export const dynamic = 'force-dynamic';
+
 export default async function Management() {
     const boardMembers = await BoardMember.findAll({
         order: [['order', 'ASC']],

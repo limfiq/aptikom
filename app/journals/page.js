@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { ExternalLink, BookOpen } from 'lucide-react';
 const { Journal } = require('@/models');
 
+export const dynamic = 'force-dynamic';
+
 export default async function Journals() {
     const journals = await Journal.findAll({
         order: [['title', 'ASC']],

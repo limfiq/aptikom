@@ -1,6 +1,8 @@
 import { FileText, Download, Folder } from 'lucide-react';
 const { Document } = require('@/models');
 
+export const dynamic = 'force-dynamic';
+
 export default async function Documents() {
     const allDocs = await Document.findAll({
         order: [['updatedAt', 'DESC']],
