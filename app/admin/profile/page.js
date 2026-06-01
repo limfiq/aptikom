@@ -19,7 +19,13 @@ export default function OrganizationProfile() {
         facebook: '',
         twitter: '',
         instagram: '',
-        linkedin: ''
+        linkedin: '',
+        chairperson: '',
+        chairpersonPhoto: '',
+        secretary: '',
+        treasurer: '',
+        totalMembers: 0,
+        totalInstitutions: 0
     });
 
     useEffect(() => {
@@ -141,6 +147,75 @@ export default function OrganizationProfile() {
                                 onChange={(e) => setFormData({ ...formData, history: e.target.value })}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                 rows="6"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Structure & Statistics */}
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Structure & Statistics</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Chairperson Name</label>
+                            <input
+                                type="text"
+                                value={formData.chairperson || ''}
+                                onChange={(e) => setFormData({ ...formData, chairperson: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="Nama Ketua Umum"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Chairperson Photo URL</label>
+                            <input
+                                type="text"
+                                value={formData.chairpersonPhoto || ''}
+                                onChange={(e) => setFormData({ ...formData, chairpersonPhoto: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="https://example.com/photo.jpg"
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Secretary</label>
+                            <input
+                                type="text"
+                                value={formData.secretary || ''}
+                                onChange={(e) => setFormData({ ...formData, secretary: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="Sekretaris Umum"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Treasurer</label>
+                            <input
+                                type="text"
+                                value={formData.treasurer || ''}
+                                onChange={(e) => setFormData({ ...formData, treasurer: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="Bendahara Umum"
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Total Individual Members</label>
+                            <input
+                                type="number"
+                                value={formData.totalMembers || 0}
+                                onChange={(e) => setFormData({ ...formData, totalMembers: parseInt(e.target.value) || 0 })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Total Institution Members</label>
+                            <input
+                                type="number"
+                                value={formData.totalInstitutions || 0}
+                                onChange={(e) => setFormData({ ...formData, totalInstitutions: parseInt(e.target.value) || 0 })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                     </div>

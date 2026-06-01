@@ -288,6 +288,10 @@ const OrganizationProfile = sequelize.define('OrganizationProfile', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    chairpersonPhoto: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     secretary: {
         type: DataTypes.STRING,
         allowNull: true

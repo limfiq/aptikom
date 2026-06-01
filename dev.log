@@ -1,0 +1,51 @@
+
+> aptikom@1.0.0 dev
+> node server.js
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/promac/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/promac/Documents/GitHub/aptikom/package-lock.json
+
+Error synchronizing database: Error [SequelizeConnectionRefusedError]: 
+    at async (server.js:15:9) {
+  parent: AggregateError: 
+      at ignore-listed frames {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  },
+  original: AggregateError: 
+      at ignore-listed frames {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  }
+}
+> Ready on http://localhost:3000
+⨯ Error [SequelizeConnectionRefusedError]: 
+    at async Home (file:/Users/promac/Documents/GitHub/aptikom/app/page.js:10:16)
+   8 |
+   9 | export default async function Home() {
+> 10 |   const news = await Post.findAll({
+     |                ^
+  11 |     order: [['createdAt', 'DESC']],
+  12 |     limit: 3,
+  13 |     raw: true {
+  parent: AggregateError: 
+      at ignore-listed frames {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  },
+  original: AggregateError: 
+      at ignore-listed frames {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  },
+  digest: '88240008'
+}
+ GET / 500 in 2.4s (next.js: 2.1s, application-code: 264ms)
